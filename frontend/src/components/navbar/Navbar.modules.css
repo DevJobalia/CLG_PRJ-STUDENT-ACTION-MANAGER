@@ -1,0 +1,52 @@
+/* Navbar.modules.css */
+
+.container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: #fff;
+    
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    margin-left: 40px;
+  }
+  
+  .logo img {
+    width: 200px;
+    height: auto;
+    margin-right: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .name {
+    flex-grow: 1;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .name img {
+    max-width: 600px;
+    height: auto;
+  }
+  
+  @media (max-width: 600px) {
+    .container {
+      flex-direction: column;
+      padding: 10px 20px;
+    }
+    
+    .logo {
+      margin-bottom: 10px;
+    }
+    
+    .name {
+      text-align: center;
+    }
+  }
+  
