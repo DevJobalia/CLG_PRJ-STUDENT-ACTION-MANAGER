@@ -22,6 +22,11 @@
   align-items: center; /* center horizontally */
   background: linear-gradient(135deg, var(--main-blue), var(--main-purple));
   padding: 10px;
+  color: black;
+}
+
+span {
+  color: black;
 }
 
 div {

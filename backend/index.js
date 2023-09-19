@@ -2,7 +2,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const multer = require("multer");
 const { connectToDatabase } = require("./DB/dbconnect"); // Import the connectToDatabase function
 
 const academicForm = require("./routes/academicForm");

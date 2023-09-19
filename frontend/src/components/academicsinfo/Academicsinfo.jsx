@@ -1,146 +1,81 @@
 import React, { useState } from "react";
-import axios from "axios";
-import "./Academicsinfo.modules.css";
 
-function FilesUploadComponent() {
-  const [loading, setLoading] = useState(false);
+function FileUploadForm() {
+  const [files, setFiles] = useState({
+    competition: null,
+    prjPresent: null,
+    paperPresent: null,
+    course: null,
+    copyright: null,
+    internship: null,
+    certification: null,
+  });
 
-  const [competition, setCompetition] = useState(null);
-  const [prjPresent, setPrjPresent] = useState(null);
-  const [paperPresent, setPaperPresent] = useState(null);
-  const [course, setCourse] = useState(null);
-  const [copyright, setCopyright] = useState(null);
-  const [internship, setInternship] = useState(null);
-  const [certification, setCertification] = useState(null);
-
-  const handleFileChange = (e) => {
-    setCompetition(e.target.files[0]);
-    setPrjPresent(e.target.files[1]);
-    setPaperPresent(e.target.files[2]);
-    setCourse(e.target.files[3]);
-    setCopyright(e.target.files[4]);
-    setInternship(e.target.files[5]);
-    setCertification(e.target.files[6]);
+  const handleFileChange = (e, field) => {
+    const newFiles = { ...files };
+    newFiles[field] = e.target.files[0];
+    setFiles(newFiles);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+
     const formData = new FormData();
-    formData.append("competition", competition);
-    // formData.append("prjPresent", prjPresent);
-    // formData.append("paperPresent", paperPresent);
-    // formData.append("course", course);
-    // formData.append("copyright", copyright);
-    // formData.append("internship", internship);
-    // formData.append("certification", certification);
+
+    for (const key in files) {
+      if (files[key]) {
+        formData.append(key, files[key]);
+      }
+    }
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/academic-form",
-        formData,
-        {}
-      );
-      console.log(response);
+      const response = await fetch("http://localhost:5000/api/academic-form", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        // Handle success
+        console.log("Files uploaded successfully");
+      } else {
+        // Handle error
+        console.error("Error uploading files");
+      }
     } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
+      // Handle network error
+      console.error("Network error:", error);
     }
   };
 
   return (
-    // <div className="container">
-    //   <div className="row">
-    //     <form onSubmit={onSubmit}>
-    //       <div className="form-group">
-    //         <input type="file" onChange={onFileChange} />
-    //       </div>
-    //       <div className="form-group">
-    //         <button className="btn btn-primary" type="submit">
-    //           Upload
-    //         </button>
-    //       </div>
-    //     </form>
-    //   </div>
-    // </div>
-    <div class="body">
-      <div class="container">
-        <div class="title">Registration</div>
-        <form onSubmit={handleSubmit}>
-          <div class="user__details">
-            <div class="input__box">
-              <span class="details">Participate/OrganizeCompetition*</span>
-              <input
-                onChange={handleFileChange}
-                type="file"
-                name="competition"
-                required
-              />
-            </div>
-            <div class="input__box">
-              <span class="details">Project Presentation *</span>
-              <input
-                onChange={handleFileChange}
-                type="file"
-                name="prjPresent"
-                // required
-              />
-            </div>
-            <div class="input__box">
-              <span class="details">Paper Presentation _</span>
-              <input
-                onChange={handleFileChange}
-                type="file"
-                name="paperPresent"
-                // required
-              />
-            </div>
-            <div class="input__box">
-              <span class="details">Online Course _</span>
-              <input
-                onChange={handleFileChange}
-                type="file"
-                name="course"
-                // required
-              />
-            </div>
-            <div class="input__box">
-              <span class="details">Copyright _</span>
-              <input
-                onChange={handleFileChange}
-                type="file"
-                name="copyright"
-                // required
-              />
-            </div>
-            <div class="input__box">
-              <span class="details">Internship _</span>
-              <input
-                onChange={handleFileChange}
-                type="file"
-                name="internship"
-                // required
-              />
-            </div>
-            <div class="input__box">
-              <span class="details">Certification \*</span>
-              <input
-                onChange={handleFileChange}
-                type="file"
-                name="certification"
-                // required
-              />
-            </div>
-          </div>
-          <button type="submit" class="button">
-            {loading ? "Saving.." : "Submit"}
-          </button>
-          <a href="login.html">Already a member? Log In</a>
-        </form>
-      </div>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="file"
+          onChange={(e) => handleFileChange(e, "competition")}
+        />
+        <input
+          type="file"
+          onChange={(e) => handleFileChange(e, "prjPresent")}
+        />
+        <input
+          type="file"
+          onChange={(e) => handleFileChange(e, "paperPresent")}
+        />
+        <input type="file" onChange={(e) => handleFileChange(e, "course")} />
+        <input type="file" onChange={(e) => handleFileChange(e, "copyright")} />
+        <input
+          type="file"
+          onChange={(e) => handleFileChange(e, "internship")}
+        />
+        <input
+          type="file"
+          onChange={(e) => handleFileChange(e, "certification")}
+        />
+        <button type="submit">Upload</button>
+      </form>
     </div>
   );
 }
 
-export default FilesUploadComponent;
+export default FileUploadForm;

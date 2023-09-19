@@ -1,164 +1,41 @@
-// const express = require("express");
-// const { Router } = express;
-// const FormDataModel = require("../models/model2");
-// const dotenv = require("dotenv");
-// const cloudinary = require("cloudinary").v2;
-// const multer = require("multer");
+const express = require("express");
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+const mongoose = require("mongoose");
+const { Router } = express;
+const FormDataModel = require("../models/model2");
 
-// const router = Router();
+const router = Router();
 
-// // Configure multer to handle multiple file uploads
-// const storage = multer.memoryStorage();
-// const upload = multer({ storage });
+// Configure Multer for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET,
-// });
+// Handle file uploads
+router.post(
+  "/",
+  upload.fields([
+    { name: "competition" },
+    { name: "prjPresent" },
+    { name: "paperPresent" },
+    { name: "course" },
+    { name: "copyright" },
+    { name: "internship" },
+    { name: "certification" },
+  ]),
+  (req, res) => {
+    // Handle file uploads and store the files
+    // You can use req.files to access the uploaded files
 
-// // this is for the student certificates data
-// router.post(
-//   "/",
-//   upload.fields([
-//     // { competition: "file1" },
-//     // { prjPresent: "file2" },
-//     // { paperPresent: "file3" },
-//     // { course: "file4" },
-//     // { copyright: "file5" },
-//     // { internship: "file8" },
-//     // { certification: "file7" },
+    // Example: Save the files to a folder (adjust the path as needed)
+    const competitionFile = req.files["competition"][0];
+    console.log(competitionFile);
+    // const prjPresentFile = req.files['prjPresent'][0];
+    // ...
 
-//     { file1: "file1" },
-//     { file2: "file2" },
-//     { file3: "file3" },
-//     { file4: "file4" },
-//     { file5: "file5" },
-//     { file8: "file8" },
-//     { file7: "file7" },
-//   ]),
-//   async (req, res) => {
-//     try {
-//       const uploadedFiles = req.files;
+    // Return a response indicating success or failure
+    res.status(200).json({ message: "Files uploaded successfully" });
+  }
+);
 
-//       // Handle the uploaded files here (e.g., save, process, etc.)
-//       // For this example, just send a response with the file details.
-//       const fileDetails = {};
-
-//       for (const key in uploadedFiles) {
-//         if (uploadedFiles.hasOwnProperty(key)) {
-//           const fileArray = uploadedFiles[key];
-//           fileDetails[key] = fileArray.map((file) => ({
-//             originalname: file.originalname,
-//             size: file.size,
-//           }));
-//         }
-//       }
-
-//       // const {
-//       //   competition,
-//       //   prjPresent,
-//       //   paperPresent,
-//       //   course,
-//       //   copyright,
-//       //   internship,
-//       //   certification,
-//       // } = req.body;
-
-//       // const competitionUrl = await cloudinary.uploader.upload(competition);
-//       // const prjPresentUrl = await cloudinary.uploader.upload(prjPresent);
-//       // const paperPresentUrl = await cloudinary.uploader.upload(paperPresent);
-//       // const courseUrl = await cloudinary.uploader.upload(course);
-//       // const copyrightUrl = await cloudinary.uploader.upload(copyright);
-//       // const internshipUrl = await cloudinary.uploader.upload(internship);
-//       // const certificationUrl = await cloudinary.uploader.upload(certification);
-
-//       // // SAVE ON MONGO DB
-//       // const FormData = new FormDataModel({
-//       //   competition: competitionUrl.url,
-//       //   prjPresent: prjPresentUrl.url,
-//       //   paperPresent: paperPresentUrl.url,
-//       //   course: courseUrl.url,
-//       //   copyright: copyrightUrl.url,
-//       //   internship: internshipUrl.url,
-//       //   certification: certificationUrl.url,
-//       // });
-//       // await FormData.save();
-
-//       res.status(200).json({ success: true, data: FormData });
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ success: false, message: error });
-//     }
-//   }
-// );
-
-// module.exports = router;
-
-let express = require("express"),
-  multer = require("multer"),
-  mongoose = require("mongoose"),
-  router = express.Router();
-
-// LOCAL STORAGE
-const DIR = "./public/";
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, DIR);
-  },
-  filename: (req, file, cb) => {
-    const fileName = file.originalname.toLowerCase().split(" ").join("-");
-    cb(null, "-" + fileName);
-  },
-});
-var upload = multer({
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (
-      file.mimetype == "image/png" ||
-      file.mimetype == "image/jpg" ||
-      file.mimetype == "image/jpeg"
-    ) {
-      cb(null, true);
-    } else {
-      cb(null, false);
-      return cb(new Error("Only .png, .jpg and .jpeg format allowed!"));
-    }
-  },
-});
-// User model
-let User = require("../models/userModel");
-router.post("/", upload.single("competition"), (req, res, next) => {
-  const url = req.protocol + "://" + req.get("host");
-  const user = new User({
-    _id: new mongoose.Types.ObjectId(),
-    name: req.body.name,
-    profileImg: url + "/public/" + req.file.filename,
-  });
-  user
-    .save()
-    .then((result) => {
-      res.status(201).json({
-        message: "User registered successfully!",
-        userCreated: {
-          _id: result._id,
-          profileImg: result.profileImg,
-        },
-      });
-    })
-    .catch((err) => {
-      console.log(err),
-        res.status(500).json({
-          error: err,
-        });
-    });
-});
-router.get("/", (req, res, next) => {
-  User.find().then((data) => {
-    res.status(200).json({
-      message: "User list retrieved successfully!",
-      users: data,
-    });
-  });
-});
 module.exports = router;
