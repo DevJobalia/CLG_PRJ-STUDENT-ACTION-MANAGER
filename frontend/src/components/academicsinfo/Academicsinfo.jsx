@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import ImageGallery from "./retrieve";
+import "./Academicsinfo.modules.css";
 
 function FileUploadForm() {
   const [files, setFiles] = useState({
@@ -48,32 +50,93 @@ function FileUploadForm() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="file"
-          onChange={(e) => handleFileChange(e, "competition")}
-        />
-        <input
-          type="file"
-          onChange={(e) => handleFileChange(e, "prjPresent")}
-        />
-        <input
-          type="file"
-          onChange={(e) => handleFileChange(e, "paperPresent")}
-        />
-        <input type="file" onChange={(e) => handleFileChange(e, "course")} />
-        <input type="file" onChange={(e) => handleFileChange(e, "copyright")} />
-        <input
-          type="file"
-          onChange={(e) => handleFileChange(e, "internship")}
-        />
-        <input
-          type="file"
-          onChange={(e) => handleFileChange(e, "certification")}
-        />
-        <button type="submit">Upload</button>
-      </form>
+    <div class="body">
+      <div class="container">
+        <div class="title">Registration</div>
+        <form onSubmit={handleSubmit}>
+          <div class="user__details">
+            <div class="input__box">
+              <span class="details">Name *</span>
+              <input
+                type="text"
+                onChange={(e) => handleFileChange(e, "competition")}
+              />
+            </div>
+            <div class="input__box">
+              <span class="details">Roll No *</span>
+              <input
+                type="text"
+                onChange={(e) => handleFileChange(e, "competition")}
+              />
+            </div>
+            <div class="input__box">
+              <span class="details">Division *</span>
+              <input
+                type="text"
+                onChange={(e) => handleFileChange(e, "competition")}
+              />
+            </div>
+            <div class="input__box">
+              <span class="details">Participate/OrganizeCompetition *</span>
+              <input
+                type="file"
+                onChange={(e) => handleFileChange(e, "competition")}
+              />
+            </div>
+
+            <div class="input__box">
+              <span class="details">Project Presentation *</span>
+              <input
+                type="file"
+                onChange={(e) => handleFileChange(e, "prjPresent")}
+              />
+            </div>
+
+            <div class="input__box">
+              <span class="details">Paper Presentation *</span>
+              <input
+                type="file"
+                onChange={(e) => handleFileChange(e, "paperPresent")}
+              />
+            </div>
+
+            <div class="input__box">
+              <span class="details">Online Course *</span>
+              <input
+                type="file"
+                onChange={(e) => handleFileChange(e, "course")}
+              />
+            </div>
+
+            <div class="input__box">
+              <span class="details">Copyright *</span>
+              <input
+                type="file"
+                onChange={(e) => handleFileChange(e, "copyright")}
+              />
+            </div>
+
+            <div class="input__box">
+              <span class="details">Internship *</span>
+              <input
+                type="file"
+                onChange={(e) => handleFileChange(e, "internship")}
+              />
+            </div>
+
+            <div class="input__box">
+              <span class="details">Certification *</span>
+              <input
+                type="file"
+                onChange={(e) => handleFileChange(e, "certification")}
+              />
+            </div>
+          </div>
+          <button type="submit" class="button">
+            Upload
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
