@@ -57,24 +57,15 @@ function FileUploadForm() {
           <div class="user__details">
             <div class="input__box">
               <span class="details">Name *</span>
-              <input
-                type="text"
-                onChange={(e) => handleFileChange(e, "competition")}
-              />
+              <input type="text" />
             </div>
             <div class="input__box">
               <span class="details">Roll No *</span>
-              <input
-                type="text"
-                onChange={(e) => handleFileChange(e, "competition")}
-              />
+              <input type="text" />
             </div>
             <div class="input__box">
               <span class="details">Division *</span>
-              <input
-                type="text"
-                onChange={(e) => handleFileChange(e, "competition")}
-              />
+              <input type="text" />
             </div>
             <div class="input__box">
               <span class="details">Participate/OrganizeCompetition *</span>
