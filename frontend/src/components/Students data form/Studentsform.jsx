@@ -1,5 +1,4 @@
 import React from "react";
-import ImageGallery from "../academicsinfo/retrieve";
 
 const Studentsform = () => {
   return (
@@ -13,7 +12,6 @@ const Studentsform = () => {
       <button onClick={() => (window.location.href = "/academicsinfo")}>
         Academics
       </button>
-      <ImageGallery />
     </div>
   );
 };
